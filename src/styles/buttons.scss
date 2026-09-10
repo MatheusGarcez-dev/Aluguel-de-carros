@@ -1,0 +1,109 @@
+.btn {
+  --clr-font-main: hsla(0 0% 20% / 100);
+  --btn-bg-1: var(--accent-soft);
+  --btn-bg-2: var(--accent-deep);
+  --btn-bg-color: #ffffff;
+  --radii: 0.5em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  padding: 0.9em 1.4em;
+  min-width: 120px;
+  min-height: 44px;
+  font-family: var(--font-display);
+  font-size: var(--size, 0.95rem);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  transition: 0.8s;
+  background-size: 280% auto;
+  background-image: linear-gradient(
+    325deg,
+    var(--btn-bg-2) 0%,
+    var(--btn-bg-1) 55%,
+    var(--btn-bg-2) 90%
+  );
+  border: none;
+  border-radius: var(--radii);
+  color: var(--btn-bg-color);
+  box-shadow:
+    0 0 18px rgba(255, 142, 43, 0.28),
+    0 4px 4px -1px rgba(230, 116, 18, 0.2),
+    inset 3px 3px 6px rgba(255, 210, 160, 0.45),
+    inset -3px -3px 6px rgba(180, 90, 10, 0.28);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.btn:hover {
+  background-position: right top;
+}
+
+.btn:is(:focus, :focus-visible, :active) {
+  outline: none;
+  box-shadow:
+    0 0 0 3px #ffffff,
+    0 0 0 6px var(--btn-bg-2);
+}
+
+.btn--secondary {
+  --btn-bg-1: #4a4a4a;
+  --btn-bg-2: #1a1a1a;
+  --btn-bg-color: #ffffff;
+  box-shadow:
+    0 0 18px rgba(36, 36, 36, 0.22),
+    0 4px 4px -1px rgba(0, 0, 0, 0.18),
+    inset 3px 3px 6px rgba(120, 120, 120, 0.35),
+    inset -3px -3px 6px rgba(0, 0, 0, 0.35);
+}
+
+.btn--secondary:is(:focus, :focus-visible, :active) {
+  box-shadow:
+    0 0 0 3px #ffffff,
+    0 0 0 6px var(--btn-bg-2);
+}
+
+.btn--ghost {
+  background-image: none;
+  background: transparent;
+  color: var(--text);
+  box-shadow: none;
+  border: 1px solid var(--border-strong);
+  transition: border-color 0.3s var(--ease), color 0.3s var(--ease),
+    background 0.3s var(--ease);
+}
+
+.btn--ghost:hover {
+  border-color: var(--accent);
+  color: var(--accent-deep);
+  background: var(--surface-warm);
+}
+
+.btn--ghost:is(:focus, :focus-visible, :active) {
+  box-shadow: 0 0 0 3px rgba(255, 142, 43, 0.25);
+}
+
+.btn--dark-ghost {
+  background-image: none;
+  background: transparent;
+  color: var(--text-on-dark);
+  box-shadow: none;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.btn--dark-ghost:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(255, 142, 43, 0.08);
+}
+
+.btn--full {
+  width: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn {
+    transition: linear;
+  }
+}

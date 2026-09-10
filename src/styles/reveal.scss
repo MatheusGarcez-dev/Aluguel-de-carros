@@ -1,0 +1,16 @@
+.reveal-target {
+  will-change: opacity, transform, filter;
+}
+
+.reveal-target.is-revealed {
+  will-change: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-target {
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+    will-change: auto;
+  }
+}

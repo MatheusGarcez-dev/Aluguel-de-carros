@@ -1,0 +1,37 @@
+.border-glow {
+  position: relative;
+  display: grid;
+  isolation: isolate;
+  border: 1px solid;
+  height: 100%;
+}
+
+.border-glow__mesh {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.border-glow__outer {
+  position: absolute;
+  pointer-events: none;
+  z-index: 1;
+  border-radius: inherit;
+}
+
+.border-glow__outer-inner {
+  position: absolute;
+  border-radius: inherit;
+}
+
+.border-glow__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  border-radius: inherit;
+}
