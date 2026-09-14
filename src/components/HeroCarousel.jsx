@@ -65,10 +65,14 @@ export const HERO_SLIDES = [
   },
 ]
 
-const AUTOPLAY_MS = 6500
+const AUTOPLAY_MS = 7200
 
 export default function HeroCarousel() {
   const root = useRef(null)
+  const prevIndex = useRef(0)
+  const direction = useRef(1)
+  const firstRun = useRef(true)
+  const timeline = useRef(null)
   const [index, setIndex] = useState(0)
   const reduceMotion = useRef(false)
 
@@ -79,22 +83,29 @@ export default function HeroCarousel() {
   const goTo = useCallback((next) => {
     setIndex((current) => {
       const total = HERO_SLIDES.length
-      if (typeof next === 'number') return ((next % total) + total) % total
-      return current
+      const target = ((next % total) + total) % total
+      if (target === current) return current
+      const forward = (target - current + total) % total
+      const backward = (current - target + total) % total
+      direction.current = forward <= backward ? 1 : -1
+      return target
     })
   }, [])
 
   const prev = useCallback(() => {
+    direction.current = -1
     setIndex((i) => (i - 1 + HERO_SLIDES.length) % HERO_SLIDES.length)
   }, [])
 
   const next = useCallback(() => {
+    direction.current = 1
     setIndex((i) => (i + 1) % HERO_SLIDES.length)
   }, [])
 
   useEffect(() => {
     if (reduceMotion.current) return undefined
     const id = window.setInterval(() => {
+      direction.current = 1
       setIndex((i) => (i + 1) % HERO_SLIDES.length)
     }, AUTOPLAY_MS)
     return () => window.clearInterval(id)
@@ -102,28 +113,226 @@ export default function HeroCarousel() {
 
   useGSAP(
     () => {
-      if (reduceMotion.current) return
+      const carousel = root.current
+      if (!carousel) return
 
-      const active = root.current?.querySelector('.hero-slide.is-active')
-      if (!active) return
-
-      const media = active.querySelector('.hero-slide__media img')
-      const content = active.querySelectorAll(
+      const slides = gsap.utils.toArray('.hero-slide', carousel)
+      const active = slides[index]
+      const previous = slides[prevIndex.current]
+      const flash = carousel.querySelector('.hero-carousel__flash')
+      const content = carousel.querySelectorAll(
         '.hero__title, .hero__text, .hero__actions > *'
       )
+      const reduce = reduceMotion.current
 
-      gsap.fromTo(
-        media,
-        { scale: 1.04 },
-        { scale: 1, duration: 1.35, ease: 'power2.out' }
-      )
-      gsap.fromTo(
-        content,
-        { opacity: 0, y: 18 },
-        { opacity: 1, y: 0, duration: 0.65, stagger: 0.08, ease: 'power3.out' }
-      )
+      if (!active) return
+
+      timeline.current?.kill()
+
+      const activeImg = active.querySelector('.hero-slide__media img')
+
+      if (reduce) {
+        slides.forEach((slide, i) => {
+          gsap.set(slide, {
+            autoAlpha: i === index ? 1 : 0,
+            zIndex: i === index ? 1 : 0,
+          })
+        })
+        gsap.set(content, { clearProps: 'all' })
+        if (activeImg) gsap.set(activeImg, { clearProps: 'transform,filter' })
+        prevIndex.current = index
+        firstRun.current = false
+        return
+      }
+
+      const tl = gsap.timeline({
+        defaults: { ease: 'power3.out' },
+        onComplete: () => {
+          slides.forEach((slide, i) => {
+            if (i !== index) gsap.set(slide, { autoAlpha: 0, zIndex: 0 })
+          })
+          // z-index no máximo 1 — overlay (z-index 2) precisa ficar sempre por cima da sombra
+          gsap.set(active, { autoAlpha: 1, zIndex: 1 })
+        },
+      })
+      timeline.current = tl
+
+      if (firstRun.current) {
+        const controls = carousel.querySelector('.hero-carousel__controls')
+        const progress = carousel.querySelector('.hero-carousel__progress')
+
+        carousel.classList.add('is-booting')
+
+        slides.forEach((slide, i) => {
+          gsap.set(slide, {
+            autoAlpha: i === 0 ? 1 : 0,
+            zIndex: i === 0 ? 1 : 0,
+          })
+        })
+
+        // Sem filter no container/imagem: isso fazia a sombra da esquerda “aparecer depois”
+        gsap.set(carousel, { autoAlpha: 0 })
+        if (activeImg) gsap.set(activeImg, { scale: 1.18, clearProps: 'filter' })
+        gsap.set(content, { autoAlpha: 0, y: 40, filter: 'blur(16px)' })
+        if (controls) gsap.set(controls, { autoAlpha: 0, y: 14 })
+        if (progress) gsap.set(progress, { autoAlpha: 0 })
+
+        tl.to(
+          carousel,
+          {
+            autoAlpha: 1,
+            duration: 1.2,
+            ease: 'power2.out',
+          },
+          0.15
+        )
+
+        if (activeImg) {
+          tl.to(
+            activeImg,
+            {
+              scale: 1.06,
+              duration: 1.9,
+              ease: 'power3.out',
+            },
+            0.15
+          )
+        }
+
+        tl.to(
+          content,
+          {
+            autoAlpha: 1,
+            y: 0,
+            filter: 'blur(0px)',
+            duration: 1,
+            stagger: 0.12,
+            ease: 'power3.out',
+            clearProps: 'filter',
+          },
+          0.4
+        )
+
+        if (controls) {
+          tl.to(
+            controls,
+            {
+              autoAlpha: 1,
+              y: 0,
+              duration: 0.7,
+              ease: 'power2.out',
+            },
+            0.85
+          )
+        }
+
+        if (progress) {
+          tl.to(
+            progress,
+            {
+              autoAlpha: 1,
+              duration: 0.55,
+              ease: 'power2.out',
+            },
+            0.95
+          )
+        }
+
+        tl.add(() => {
+          carousel.classList.remove('is-booting')
+        })
+
+        firstRun.current = false
+        prevIndex.current = index
+        return
+      }
+
+      if (previous && previous !== active) {
+        const prevImg = previous.querySelector('.hero-slide__media img')
+
+        gsap.set(active, { autoAlpha: 0, zIndex: 1 })
+        gsap.set(previous, { autoAlpha: 1, zIndex: 0 })
+        if (activeImg) gsap.set(activeImg, { scale: 1.12, clearProps: 'filter' })
+        if (prevImg) gsap.set(prevImg, { clearProps: 'filter' })
+        gsap.set(content, { autoAlpha: 0, y: 22, filter: 'blur(8px)' })
+
+        if (flash) {
+          tl.fromTo(
+            flash,
+            { autoAlpha: 0 },
+            {
+              autoAlpha: 0.14,
+              duration: 0.2,
+              yoyo: true,
+              repeat: 1,
+              ease: 'sine.inOut',
+            },
+            0
+          )
+        }
+
+        tl.to(
+          active,
+          {
+            autoAlpha: 1,
+            duration: 0.95,
+            ease: 'power2.inOut',
+          },
+          0
+        )
+
+        if (activeImg) {
+          tl.to(
+            activeImg,
+            {
+              scale: 1.06,
+              duration: 1.25,
+              ease: 'power3.out',
+            },
+            0
+          )
+        }
+
+        tl.to(
+          previous,
+          {
+            autoAlpha: 0,
+            duration: 0.85,
+            ease: 'power2.inOut',
+          },
+          0.12
+        )
+
+        if (prevImg) {
+          tl.to(
+            prevImg,
+            {
+              scale: 1.1,
+              duration: 0.95,
+              ease: 'power2.inOut',
+            },
+            0
+          )
+        }
+
+        tl.to(
+          content,
+          {
+            autoAlpha: 1,
+            y: 0,
+            filter: 'blur(0px)',
+            duration: 0.8,
+            stagger: 0.09,
+            ease: 'power3.out',
+            clearProps: 'filter',
+          },
+          0.28
+        )
+      }
+
+      prevIndex.current = index
     },
-    { scope: root, dependencies: [index], revertOnUpdate: true }
+    { scope: root, dependencies: [index], revertOnUpdate: false }
   )
 
   const slide = HERO_SLIDES[index]
@@ -159,6 +368,7 @@ export default function HeroCarousel() {
         ))}
 
         <div className="hero-slide__overlay" aria-hidden="true" />
+        <div className="hero-carousel__flash" aria-hidden="true" />
 
         <div className="hero__content">
           <h1 className="hero__title" id={`hero-title-${slide.id}`}>

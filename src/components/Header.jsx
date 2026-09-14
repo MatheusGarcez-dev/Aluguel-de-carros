@@ -59,14 +59,15 @@ export default function Header() {
 
     gsap.fromTo(
       el,
-      { y: -28, opacity: 0 },
+      { y: -40, opacity: 0, filter: 'blur(12px)' },
       {
         y: 0,
         opacity: 1,
-        duration: 0.85,
+        filter: 'blur(0px)',
+        duration: 1.05,
         ease: 'power3.out',
-        delay: 0.08,
-        clearProps: 'transform,opacity',
+        delay: 0.45,
+        clearProps: 'transform,opacity,filter',
       }
     )
   }, [])

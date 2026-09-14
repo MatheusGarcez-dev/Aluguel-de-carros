@@ -6,6 +6,7 @@ import WhatsAppFloat from './WhatsAppFloat'
 import SmoothScroll, { useSmoothScroll } from './SmoothScroll'
 import RevealOnScroll from './RevealOnScroll'
 import DocumentTitle from './DocumentTitle'
+import PageIntro from './PageIntro'
 
 function ScrollToTop() {
   const { pathname, search, hash } = useLocation()
@@ -40,6 +41,7 @@ function ScrollToTop() {
 export default function Layout() {
   return (
     <SmoothScroll>
+      <PageIntro />
       <ScrollToTop />
       <DocumentTitle />
       <RevealOnScroll />

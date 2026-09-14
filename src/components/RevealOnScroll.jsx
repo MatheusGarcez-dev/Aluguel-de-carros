@@ -25,15 +25,10 @@ const REVEAL_SELECTOR = [
   'main .outsource-steps__list > *',
   'main .outsource-fit__grid > *',
   'main .outsource-cta__inner > *',
-  'main .about-home__grid > *',
   'main .promo-teaser__header > *',
   'main .promo-plans > *',
   'main .promo-note',
   'main .fleet-home__intro > *',
-  'main .fleet-home__panels > *',
-  'main .process-home__header',
-  'main .process-home__step',
-  'main .mid-banner',
   'main .cta-final__panel',
   'main .contact-grid > *',
   'main .grid-2 > *',
@@ -52,7 +47,8 @@ function collectTargets() {
   const nodes = Array.from(document.querySelectorAll(REVEAL_SELECTOR))
   return nodes.filter((el, index, list) => {
     if (!(el instanceof HTMLElement)) return false
-    if (el.closest('.site-header, .whatsapp-float, .hero-carousel')) return false
+    if (el.closest('.site-header, .whatsapp-float, .hero-carousel, .about-home'))
+      return false
     // avoid nested duplicates (parent already targeted)
     return !list.some(
       (other, otherIndex) =>

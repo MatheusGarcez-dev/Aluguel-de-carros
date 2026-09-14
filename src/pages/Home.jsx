@@ -1,15 +1,16 @@
 import { useRef } from 'react'
 import { Link } from 'react-router-dom'
 import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import HeroCarousel from '../components/HeroCarousel'
 import BorderGlow from '../components/BorderGlow'
-import { PROMOS, PROMO_EXCLUDED, whatsappLink, WHATSAPP_DISPLAY } from '../data/site'
+import { PROMOS, PROMO_EXCLUDED, whatsappLink } from '../data/site'
 import aboutImage from '../assets/sobre.png'
-import midBanner from '../assets/banner-meio.png'
+import logoMark from '../assets/logo-aluguel.png'
 import logo3d from '../assets/logo-3d.png'
 
-gsap.registerPlugin(useGSAP)
+gsap.registerPlugin(useGSAP, ScrollTrigger)
 
 function IconCalendar() {
   return (
@@ -29,25 +30,6 @@ function IconPin() {
         strokeWidth="1.6"
       />
       <circle cx="12" cy="10.8" r="2.2" stroke="currentColor" strokeWidth="1.6" />
-    </svg>
-  )
-}
-
-function IconSend() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path
-        d="M4.5 11.2L19.2 4.4c.7-.3 1.4.4 1.1 1.1L13.5 20.2c-.3.7-1.3.6-1.5-.2l-1.5-5.4a1 1 0 00-.6-.6l-5.4-1.5c-.8-.2-.9-1.2-.2-1.5z"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M10.2 13.8L19.8 5.4"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-      />
     </svg>
   )
 }
@@ -132,24 +114,6 @@ function IconRoute() {
   )
 }
 
-const HOW_IT_WORKS = [
-  {
-    title: 'Envie sua necessidade',
-    text: 'Datas, local de retirada e tipo de veículo — tudo pelo WhatsApp.',
-    icon: IconSend,
-  },
-  {
-    title: 'Receba opções',
-    text: 'Comparamos disponibilidade e tarifas com parceiros em todo o país.',
-    icon: IconBolt,
-  },
-  {
-    title: 'Reserve com tranquilidade',
-    text: 'Escolha a melhor oferta e finalize com suporte dedicado.',
-    icon: IconPin,
-  },
-]
-
 const TRUST_ITEMS = [
   { icon: IconCalendar, value: '2018', label: 'No mercado brasileiro' },
   { icon: IconPin, value: 'Brasil', label: 'Cobertura nacional' },
@@ -157,35 +121,29 @@ const TRUST_ITEMS = [
   { icon: IconBolt, value: 'Rápido', label: 'Cotação no WhatsApp' },
 ]
 
-const FLEET_OUTSOURCE = {
-  responsibilities: [
-    'Licenciamento',
-    'IPVA e seguro obrigatório',
-    'Manutenção preventiva e reparos',
-    'Renovação da frota',
-  ],
-  benefits: [
-    {
-      title: 'Disponibilidade 24/7',
-      text: 'Veículos disponíveis o ano inteiro, alinhados à operação da empresa.',
-    },
-    {
-      title: 'Frota flexível',
-      text: 'Aumente ou reduza a quantidade conforme a demanda do momento.',
-    },
-    {
-      title: 'Zero manutenção',
-      text: 'Veículos revisados e atualizados — sem custo operacional para você.',
-    },
-    {
-      title: 'Sem custo de renovação',
-      text: 'A responsabilidade de renovar a frota fica com a terceirizadora.',
-    },
-  ],
-}
+const OUTSOURCE_POINTS = [
+  'Licenciamento, IPVA e seguro',
+  'Manutenção preventiva e reparos',
+  'Renovação da frota',
+  'Frota flexível conforme a demanda',
+]
+
+const ABOUT_MARQUEE = [
+  'Desde 2018 no mercado',
+  'Cobertura nacional',
+  'Atendimento humanizado',
+  'Cotação no WhatsApp',
+  'Consulta centralizada',
+  'Parceiros em todo o Brasil',
+  'Sem burocracia',
+  'Frota para cada necessidade',
+  'Suporte rápido',
+  'Locação simples',
+]
 
 export default function Home() {
   const root = useRef(null)
+  const wipeRef = useRef(null)
 
   useGSAP(
     () => {
@@ -196,16 +154,16 @@ export default function Home() {
       const items = root.current?.querySelectorAll('.trust__item')
       if (!frame || !items?.length) return
 
-      gsap.set(frame, { opacity: 0, y: 20, filter: 'blur(12px)' })
-      gsap.set(items, { opacity: 0, y: 18, filter: 'blur(10px)' })
+      gsap.set(frame, { opacity: 0, y: 28, filter: 'blur(16px)' })
+      gsap.set(items, { opacity: 0, y: 24, filter: 'blur(14px)' })
 
-      const tl = gsap.timeline({ delay: 0.2 })
+      const tl = gsap.timeline({ delay: 0.95 })
       tl.to(frame, {
         opacity: 1,
         y: 0,
         filter: 'blur(0px)',
-        duration: 0.8,
-        ease: 'power2.out',
+        duration: 1,
+        ease: 'power3.out',
         clearProps: 'filter',
       }).to(
         items,
@@ -213,342 +171,519 @@ export default function Home() {
           opacity: 1,
           y: 0,
           filter: 'blur(0px)',
-          duration: 0.7,
-          stagger: 0.1,
-          ease: 'power2.out',
+          duration: 0.85,
+          stagger: 0.12,
+          ease: 'power3.out',
           clearProps: 'filter,transform',
         },
-        '-=0.4'
+        '-=0.55'
       )
     },
     { scope: root, dependencies: [] }
   )
 
+  useGSAP(
+    () => {
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      const wipe = wipeRef.current
+      if (!wipe || reduce) return
+
+      const veil = wipe.querySelector('.home-wipe__veil')
+      const core = wipe.querySelector('.home-wipe__core')
+      const logo = wipe.querySelector('.home-wipe__logo')
+      const rings = wipe.querySelectorAll('.home-wipe__ring')
+      const hint = wipe.querySelector('.home-wipe__hint')
+      if (!veil || !core) return
+
+      gsap.set(veil, { clipPath: 'circle(0% at 50% 50%)' })
+      gsap.set(core, { scale: 0.72, opacity: 0 })
+      if (logo) gsap.set(logo, { opacity: 0, scale: 0.88, filter: 'blur(10px)' })
+      if (rings.length) gsap.set(rings, { scale: 0.55, opacity: 0 })
+      if (hint) gsap.set(hint, { opacity: 0, y: 16 })
+
+      const tl = gsap.timeline({
+        defaults: { ease: 'sine.inOut' },
+        scrollTrigger: {
+          trigger: wipe,
+          start: 'top top',
+          end: '+=220%',
+          pin: true,
+          scrub: 1.6,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+        },
+      })
+
+      tl.to(
+        core,
+        {
+          scale: 1,
+          opacity: 1,
+          duration: 0.32,
+          ease: 'power3.out',
+        },
+        0
+      )
+
+      if (logo) {
+        tl.to(
+          logo,
+          {
+            opacity: 1,
+            scale: 1,
+            filter: 'blur(0px)',
+            duration: 0.4,
+            ease: 'power2.out',
+          },
+          0.04
+        )
+      }
+
+      if (rings.length) {
+        tl.to(
+          rings,
+          {
+            scale: 1,
+            opacity: 1,
+            duration: 0.45,
+            stagger: 0.08,
+            ease: 'power2.out',
+          },
+          0.1
+        )
+      }
+
+      if (hint) {
+        tl.to(
+          hint,
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.3,
+            ease: 'power2.out',
+          },
+          0.12
+        )
+      }
+
+      tl.to(
+        veil,
+        {
+          clipPath: 'circle(16% at 50% 50%)',
+          duration: 0.4,
+          ease: 'sine.out',
+        },
+        0.28
+      )
+
+      if (rings.length) {
+        tl.to(
+          rings,
+          {
+            scale: (i) => 1.35 + i * 0.45,
+            opacity: 0,
+            duration: 0.7,
+            stagger: 0.06,
+            ease: 'power1.out',
+          },
+          0.45
+        )
+      }
+
+      tl.to(
+        veil,
+        {
+          clipPath: 'circle(72% at 50% 50%)',
+          duration: 0.55,
+          ease: 'sine.inOut',
+        },
+        0.6
+      )
+
+      tl.to(
+        veil,
+        {
+          clipPath: 'circle(160% at 50% 50%)',
+          duration: 0.5,
+          ease: 'power2.inOut',
+        },
+        1.1
+      )
+
+      if (hint) {
+        tl.to(
+          hint,
+          {
+            opacity: 0,
+            y: -8,
+            duration: 0.35,
+            ease: 'sine.in',
+          },
+          0.9
+        )
+      }
+
+      if (logo) {
+        tl.to(
+          logo,
+          {
+            opacity: 0,
+            scale: 1.12,
+            filter: 'blur(8px)',
+            duration: 0.4,
+            ease: 'sine.in',
+          },
+          0.95
+        )
+      }
+
+      tl.to(
+        core,
+        {
+          opacity: 0,
+          scale: 1.06,
+          duration: 0.35,
+          ease: 'sine.in',
+        },
+        1.05
+      )
+
+      ScrollTrigger.refresh()
+    },
+    { scope: root, dependencies: [] }
+  )
+
   return (
-    <div ref={root}>
-      <HeroCarousel />
+    <div ref={root} className="home">
+      <div className="home__light">
+        <HeroCarousel />
 
-      <section className="trust" aria-label="Diferenciais">
-        <div className="trust__frame">
-          <ul className="trust__list">
-            {TRUST_ITEMS.map((item) => {
-              const Icon = item.icon
-              return (
-                <li key={item.value} className="trust__item">
-                  <span className="trust__icon">
-                    <Icon />
-                  </span>
-                  <span className="trust__copy">
-                    <strong className="trust__value">{item.value}</strong>
-                    <span className="trust__label">{item.label}</span>
-                  </span>
-                </li>
-              )
-            })}
-          </ul>
-        </div>
-      </section>
-
-      <section className="section about-home">
-        <div className="container about-home__grid">
-          <div className="about-home__content">
-            <span className="section__eyebrow">A Empresa</span>
-            <h2 className="section__title">Locação simples, atendimento de verdade</h2>
-            <p className="section__lead">
-              Desde 2018 a AlugueldeCarros.org conecta você a opções de frota em todo o
-              Brasil — com consulta centralizada e suporte humanizado pelo WhatsApp.
-            </p>
-            <p className="about-home__text">
-              Você informa datas e necessidades; nossa equipe compara disponibilidade e
-              tarifas com parceiros do setor para encontrar a condição mais adequada à
-              sua viagem.
-            </p>
-            <div className="about-home__actions">
-              <Link className="btn" to="/empresa">
-                Conhecer a empresa
-              </Link>
-              <a
-                className="btn btn--ghost"
-                href={whatsappLink()}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Falar no WhatsApp
-              </a>
-            </div>
-          </div>
-
-          <div className="about-home__media">
-            <img
-              src={aboutImage}
-              alt="Showroom Aluguel de Carros Brasil"
-              width={1200}
-              height={800}
-              loading="lazy"
-            />
-          </div>
-        </div>
-      </section>
-
-      <section className="section features-section">
-        <div className="container">
-          <div className="section__header">
-            <span className="section__eyebrow">Extras</span>
-            <h2 className="section__title">O essencial para a sua viagem</h2>
-            <p className="section__lead">
-              Além do veículo, você pode incluir itens que fazem diferença no dia a dia.
-            </p>
-          </div>
-          <div className="features__grid">
-            <BorderGlow className="feature-card" animated={false}>
-              <article className="feature">
-                <IconGps />
-                <h3>GPS</h3>
-                <p>Navegação prática para qualquer destino, sem depender só do celular.</p>
-              </article>
-            </BorderGlow>
-            <BorderGlow className="feature-card" animated={false}>
-              <article className="feature">
-                <IconSeat />
-                <h3>Cadeira para bebê</h3>
-                <p>Segurança e conforto para viajar com crianças, sob consulta.</p>
-              </article>
-            </BorderGlow>
-            <BorderGlow className="feature-card" animated={false}>
-              <article className="feature">
-                <IconRoute />
-                <h3>Devolução flexível</h3>
-                <p>
-                  Possibilidade de devolução em outras cidades ou estados. Consulte condições.
-                </p>
-              </article>
-            </BorderGlow>
-          </div>
-        </div>
-      </section>
-
-      <section className="section section--dark promo-teaser">
-        <div className="container">
-          <div className="promo-teaser__header">
-            <div className="promo-teaser__copy">
-              <span className="section__eyebrow">Promoções</span>
-              <h2 className="section__title">Quanto mais tempo, melhor o valor</h2>
-              <p className="section__lead">
-                Condições especiais para locações longas nos grupos A e B. Valores por diária,
-                sujeitos a disponibilidade.
-              </p>
-            </div>
-            <Link className="btn btn--dark-ghost promo-teaser__cta" to="/promocoes">
-              Ver condições completas
-            </Link>
-          </div>
-
-          <div className="promo-plans">
-            {PROMOS.map((promo, i) => (
-              <article
-                key={promo.id}
-                className={`promo-plan${i === PROMOS.length - 1 ? ' promo-plan--featured' : ''}`}
-              >
-                <header className="promo-plan__head">
-                  <span className="promo-plan__label">{promo.title}</span>
-                  <span className="promo-plan__duration">{promo.subtitle}</span>
-                </header>
-
-                <div className="promo-plan__rates">
-                  {promo.rates.map((rate) => (
-                    <div key={rate.group} className="promo-plan__rate">
-                      <span className="promo-plan__group">{rate.group}</span>
-                      <strong className="promo-plan__price">
-                        R$ {rate.price}
-                        <span>/dia</span>
-                      </strong>
-                    </div>
-                  ))}
-                </div>
-              </article>
-            ))}
-          </div>
-
-          <p className="promo-note">*{PROMO_EXCLUDED}</p>
-        </div>
-      </section>
-
-      <section className="mid-banner" aria-label="Reservar agora">
-        <a
-          className="mid-banner__link"
-          href={whatsappLink('Olá! Quero reservar um carro agora.')}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img
-            src={midBanner}
-            alt="Encontre o carro ideal para cada destino. Aluguel prático, seguro e com cobertura em todo o Brasil. Reservar agora."
-            width={1920}
-            height={640}
-            loading="lazy"
-          />
-        </a>
-      </section>
-
-      <section className="section fleet-home">
-        <div className="container">
-          <div className="fleet-home__intro">
-            <div className="fleet-home__media">
-              <img
-                src={logo3d}
-                alt="Aluguel de Carros Brasil"
-                width={640}
-                height={360}
-                loading="lazy"
-              />
-            </div>
-
-            <div className="fleet-home__intro-content">
-              <span className="section__eyebrow">Terceirização de Frota</span>
-              <h2 className="section__title">Frota corporativa sem o peso operacional</h2>
-              <p className="section__lead">
-                Uma forma inteligente de reduzir custos e liberar capital para a atividade
-                principal da empresa — enquanto a gestão dos veículos fica sob nossa
-                responsabilidade.
-              </p>
-              <div className="fleet-home__intro-actions">
-                <Link className="btn" to="/terceirizacao">
-                  Saiba mais
-                </Link>
-                <a
-                  className="btn btn--ghost"
-                  href={whatsappLink(
-                    'Olá! Tenho interesse em terceirização de frota para minha empresa.'
-                  )}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Solicitar proposta
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div className="fleet-home__panels">
-            <div className="fleet-home__panel">
-              <h3 className="fleet-home__panel-title">Responsabilidades transferidas</h3>
-              <p className="fleet-home__panel-lead">
-                A empresa terceirizadora assume a complexidade operacional da frota.
-              </p>
-              <ul className="fleet-home__list">
-                {FLEET_OUTSOURCE.responsibilities.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="fleet-home__panel fleet-home__panel--benefits">
-              <h3 className="fleet-home__panel-title">Vantagens do modelo</h3>
-              <p className="fleet-home__panel-lead">
-                Mais previsibilidade, flexibilidade e foco no core business.
-              </p>
-              <div className="fleet-home__benefits">
-                {FLEET_OUTSOURCE.benefits.map((item) => (
-                  <article key={item.title} className="fleet-home__benefit">
-                    <h4>{item.title}</h4>
-                    <p>{item.text}</p>
-                  </article>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="section process-home">
-        <div className="container">
-          <div className="process-home__header">
-            <span className="section__eyebrow">Como funciona</span>
-            <h2 className="section__title">Três passos. Reserva resolvida.</h2>
-            <p className="section__lead">
-              Um atendimento centralizado, várias opções de frota. Você fala conosco —
-              nós encontramos as melhores condições disponíveis.
-            </p>
-          </div>
-
-          <ol className="process-home__track">
-            {HOW_IT_WORKS.map((step, index) => {
-              const Icon = step.icon
-              return (
-                <li key={step.title} className="process-home__step">
-                  <div className="process-home__marker">
-                    <span className="process-home__icon">
+        <section className="trust" aria-label="Diferenciais">
+          <div className="trust__frame">
+            <ul className="trust__list">
+              {TRUST_ITEMS.map((item) => {
+                const Icon = item.icon
+                return (
+                  <li key={item.value} className="trust__item">
+                    <span className="trust__icon">
                       <Icon />
                     </span>
-                    <span className="process-home__index">
-                      {String(index + 1).padStart(2, '0')}
+                    <span className="trust__copy">
+                      <strong className="trust__value">{item.value}</strong>
+                      <span className="trust__label">{item.label}</span>
                     </span>
-                  </div>
-                  <h3>{step.title}</h3>
-                  <p>{step.text}</p>
-                </li>
-              )
-            })}
-          </ol>
+                  </li>
+                )
+              })}
+            </ul>
+          </div>
+        </section>
 
-          <div className="process-home__footer">
+        <section className="wa-strip wa-strip--light" aria-label="Cotação rápida">
+          <div className="container wa-strip__inner">
+            <p className="wa-strip__text">
+              Precisa de um carro? Cotação rápida no WhatsApp.
+            </p>
             <a
               className="btn"
-              href={whatsappLink('Olá! Quero iniciar uma cotação de aluguel.')}
+              href={whatsappLink('Olá! Quero receber uma cotação de aluguel de carro.')}
               target="_blank"
               rel="noopener noreferrer"
             >
-              Começar agora no WhatsApp
+              Receber cotação agora
             </a>
-            <span className="process-home__hint">Resposta rápida · Sem formulários longos</span>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="section cta-final">
-        <div className="container">
-          <div className="cta-final__panel">
-            <div className="cta-final__top">
-              <div className="cta-final__copy">
-                <div className="cta-final__meta">
-                  <span className="section__eyebrow">Atendimento</span>
-                  <span className="cta-final__status">Online agora</span>
+        <section className="section features-section">
+          <div className="container">
+            <div className="section__header">
+              <span className="section__eyebrow">Extras</span>
+              <h2 className="section__title">O essencial para a sua viagem</h2>
+            </div>
+            <div className="features__grid">
+              <BorderGlow className="feature-card" animated={false}>
+                <article className="feature">
+                  <IconGps />
+                  <h3>GPS</h3>
+                  <p>Navegação prática para qualquer destino.</p>
+                </article>
+              </BorderGlow>
+              <BorderGlow className="feature-card" animated={false}>
+                <article className="feature">
+                  <IconSeat />
+                  <h3>Cadeira para bebê</h3>
+                  <p>Segurança para viajar com crianças, sob consulta.</p>
+                </article>
+              </BorderGlow>
+              <BorderGlow className="feature-card" animated={false}>
+                <article className="feature">
+                  <IconRoute />
+                  <h3>Devolução flexível</h3>
+                  <p>Devolução em outras cidades ou estados, sob consulta.</p>
+                </article>
+              </BorderGlow>
+            </div>
+            <div className="features-section__cta">
+              <a
+                className="btn"
+                href={whatsappLink(
+                  'Olá! Quero consultar extras (GPS, cadeira para bebê ou devolução flexível).'
+                )}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Consultar extras no WhatsApp
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <section className="section about-home">
+          <div className="container about-home__grid">
+            <div className="about-home__content">
+              <span className="section__eyebrow">A Empresa</span>
+              <h2 className="section__title">Locação simples, atendimento de verdade</h2>
+              <p className="section__lead">
+                Desde 2018 conectamos você a opções de frota em todo o Brasil — com consulta
+                centralizada e suporte humanizado pelo WhatsApp.
+              </p>
+
+              <div className="about-marquee" aria-label="Diferenciais da empresa">
+                <div className="about-marquee__viewport">
+                  <div className="about-marquee__track">
+                    {[0, 1].map((copy) => (
+                      <ul
+                        key={copy}
+                        className="about-marquee__list"
+                        aria-hidden={copy === 1 ? true : undefined}
+                      >
+                        {ABOUT_MARQUEE.map((item) => (
+                          <li key={`${copy}-${item}`} className="about-marquee__item">
+                            <span className="about-marquee__dot" aria-hidden="true" />
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    ))}
+                  </div>
                 </div>
-                <h2 className="cta-final__title">Pronto para cotar sua locação?</h2>
-                <p className="cta-final__text">
-                  Envie datas e destino no WhatsApp. Nossa equipe retorna com opções
-                  disponíveis — sem formulários longos.
-                </p>
               </div>
 
-              <div className="cta-final__actions">
+              <div className="about-home__actions">
                 <a
-                  className="cta-final__btn cta-final__btn--primary"
+                  className="btn"
                   href={whatsappLink()}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   Falar no WhatsApp
                 </a>
-                <Link className="cta-final__btn cta-final__btn--ghost" to="/contato">
-                  Outros contatos
+                <Link className="btn btn--ghost" to="/empresa">
+                  Conhecer a empresa
                 </Link>
               </div>
             </div>
 
-            <div className="cta-final__bottom">
-              <span>Central</span>
-              <a
-                href={whatsappLink()}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {WHATSAPP_DISPLAY}
-              </a>
+            <div className="about-home__media">
+              <img
+                src={aboutImage}
+                alt="Showroom Aluguel de Carros Brasil"
+                width={1200}
+                height={1200}
+                loading="eager"
+                decoding="async"
+              />
             </div>
           </div>
+        </section>
+      </div>
+
+      <section
+        ref={wipeRef}
+        className="home-wipe"
+        aria-hidden="true"
+      >
+        <div className="home-wipe__stage">
+          <div className="home-wipe__veil" />
+          <div className="home-wipe__core">
+            <span className="home-wipe__ring" />
+            <span className="home-wipe__ring" />
+            <span className="home-wipe__ring" />
+            <div className="home-wipe__disc">
+              <img
+                className="home-wipe__logo"
+                src={logoMark}
+                alt=""
+                width={160}
+                height={40}
+                decoding="async"
+              />
+            </div>
+          </div>
+          <p className="home-wipe__hint">Promoções e frota corporativa</p>
         </div>
       </section>
+
+      <div className="home__dark">
+        <section className="section promo-teaser">
+          <div className="container">
+            <div className="promo-teaser__header">
+              <div className="promo-teaser__copy">
+                <span className="section__eyebrow">Promoções</span>
+                <h2 className="section__title">Quanto mais tempo, melhor o valor</h2>
+                <p className="section__lead">
+                  Condições especiais para locações longas nos grupos A e B.
+                </p>
+              </div>
+              <div className="promo-teaser__actions">
+                <a
+                  className="btn"
+                  href={whatsappLink('Olá! Quero consultar as promoções vigentes.')}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Cotar no WhatsApp
+                </a>
+                <Link className="btn btn--dark-ghost" to="/promocoes">
+                  Ver condições
+                </Link>
+              </div>
+            </div>
+
+            <div className="promo-plans">
+              {PROMOS.map((promo, i) => (
+                <article
+                  key={promo.id}
+                  className={`promo-plan${i === PROMOS.length - 1 ? ' promo-plan--featured' : ''}`}
+                >
+                  <header className="promo-plan__head">
+                    <span className="promo-plan__label">{promo.title}</span>
+                    <span className="promo-plan__duration">{promo.subtitle}</span>
+                  </header>
+
+                  <div className="promo-plan__rates">
+                    {promo.rates.map((rate) => (
+                      <div key={rate.group} className="promo-plan__rate">
+                        <span className="promo-plan__group">{rate.group}</span>
+                        <strong className="promo-plan__price">
+                          R$ {rate.price}
+                          <span>/dia</span>
+                        </strong>
+                      </div>
+                    ))}
+                  </div>
+
+                  <a
+                    className="promo-plan__cta"
+                    href={whatsappLink(
+                      `Olá! Tenho interesse na promoção ${promo.title.toLowerCase()} (${promo.subtitle}).`
+                    )}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Reservar no WhatsApp
+                  </a>
+                </article>
+              ))}
+            </div>
+
+            <p className="promo-note">*{PROMO_EXCLUDED}</p>
+          </div>
+        </section>
+
+        <section className="wa-strip wa-strip--dark" aria-label="Falar com atendimento">
+          <div className="container wa-strip__inner">
+            <p className="wa-strip__text">
+              Atendimento humano, direto no WhatsApp.
+            </p>
+            <a
+              className="btn"
+              href={whatsappLink('Olá! Quero falar com o atendimento.')}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Chamar no WhatsApp
+            </a>
+          </div>
+        </section>
+
+        <section className="section fleet-home">
+          <div className="container">
+            <div className="fleet-home__intro">
+              <div className="fleet-home__media">
+                <img
+                  src={logo3d}
+                  alt="Aluguel de Carros Brasil"
+                  width={640}
+                  height={360}
+                  loading="lazy"
+                />
+              </div>
+
+              <div className="fleet-home__intro-content">
+                <span className="section__eyebrow">Terceirização de Frota</span>
+                <h2 className="section__title">Frota corporativa sem o peso operacional</h2>
+                <p className="section__lead">
+                  Reduza custos e libere capital — a gestão dos veículos fica sob nossa
+                  responsabilidade.
+                </p>
+                <ul className="fleet-home__list fleet-home__list--inline">
+                  {OUTSOURCE_POINTS.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+                <div className="fleet-home__intro-actions">
+                  <a
+                    className="btn"
+                    href={whatsappLink(
+                      'Olá! Tenho interesse em terceirização de frota para minha empresa.'
+                    )}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Solicitar proposta
+                  </a>
+                  <Link className="btn btn--ghost" to="/terceirizacao">
+                    Saiba mais
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="section cta-final">
+          <div className="container">
+            <div className="cta-final__panel cta-final__panel--compact">
+              <div className="cta-final__copy">
+                <h2 className="cta-final__title">Pronto para cotar?</h2>
+                <p className="cta-final__text">
+                  Envie datas e destino no WhatsApp. Retornamos com opções disponíveis.
+                </p>
+              </div>
+              <div className="cta-final__actions">
+                <a
+                  className="cta-final__btn cta-final__btn--primary"
+                  href={whatsappLink('Olá! Quero iniciar uma cotação de aluguel agora.')}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Receber cotação agora
+                </a>
+                <a
+                  className="cta-final__btn cta-final__btn--ghost"
+                  href={whatsappLink('Olá! Tenho uma dúvida sobre aluguel de carro.')}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Tirar dúvida no WhatsApp
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
     </div>
   )
 }
