@@ -52,11 +52,15 @@
   grid-area: 1 / 1;
   position: relative;
   z-index: 2;
-  align-self: center;
+  align-self: start;
   justify-self: stretch;
+  display: flex;
+  align-items: center;
+  min-height: min(100svh, 100%);
   padding-block: 1.5rem;
   width: min(100% - 2.5rem, var(--container));
   margin-inline: auto;
+  box-sizing: border-box;
 }
 
 .hero__container {
@@ -236,10 +240,12 @@
 
   .hero__layout {
     align-self: stretch;
+    align-items: stretch;
     display: flex;
     flex-direction: column;
+    min-height: 100%;
     width: min(100% - 2rem, var(--container));
-    padding-block: 7.25rem 1.15rem;
+    padding-block: 0 1.15rem;
     box-sizing: border-box;
   }
 
@@ -252,7 +258,9 @@
     min-height: 100%;
   }
 
+  /* Text block optically centered in the first viewport */
   .hero__eyebrow {
+    margin-top: max(5.5rem, calc((100svh - 22rem) / 2));
     font-size: 0.68rem;
     margin-bottom: 0.45rem;
   }
