@@ -8,6 +8,7 @@ import './styles/footer.scss'
 import './styles/border-glow.scss'
 import './styles/pages.scss'
 import './styles/reveal.scss'
+import './styles/car-drive.scss'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

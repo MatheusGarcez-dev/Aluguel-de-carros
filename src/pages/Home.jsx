@@ -4,6 +4,7 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import Hero from '../components/Hero'
+import CarDrive from '../components/CarDrive'
 import BorderGlow from '../components/BorderGlow'
 import { PROMOS, PROMO_EXCLUDED, whatsappLink } from '../data/site'
 import aboutImage from '../assets/sobre.png'
@@ -454,6 +455,7 @@ export default function Home() {
 
         <section className="section features-section">
           <div className="container">
+            <CarDrive />
             <div className="section__header">
               <span className="section__eyebrow">Extras</span>
               <h2 className="section__title">O essencial para a sua viagem</h2>

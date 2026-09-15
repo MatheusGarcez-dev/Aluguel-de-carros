@@ -1,0 +1,928 @@
+/* Car drive — adapted from Uiverse.io by yeisonordonez, brand palette */
+
+.car-drive {
+  --car: var(--accent);
+  --car-mid: var(--accent-soft);
+  --car-deep: var(--accent-deep);
+  --car-dark: #9a4a08;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: clamp(0.5rem, 2vw, 1.25rem);
+  overflow: visible;
+}
+
+/* Same coordinate space as the original 380×380 demo */
+.car-drive__scene {
+  position: relative;
+  width: 380px;
+  height: 380px;
+  flex-shrink: 0;
+  margin-inline: auto;
+}
+
+@media (max-width: 520px) {
+  .car-drive {
+    height: 300px;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+
+  .car-drive__scene {
+    transform: scale(0.78);
+    transform-origin: center bottom;
+    margin-bottom: -40px;
+  }
+}
+
+.car-drive__body {
+  position: absolute;
+  width: 380px;
+  height: 380px;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  animation: car-drive-lift 3s infinite cubic-bezier(0.96, 0.5, 0.27, 0.55);
+  transform-origin: center;
+}
+
+.car-drive__shell {
+  position: absolute;
+  width: 220px;
+  height: 110px;
+  background-color: var(--car-deep);
+  left: 30px;
+  top: 150px;
+  clip-path: polygon(6% 0%, 80% 0%, 100% 50%, 100% 100%, 0% 100%);
+}
+
+.car-drive__shell::before {
+  content: '';
+  position: absolute;
+  width: 220px;
+  height: 45px;
+  background-color: var(--car);
+  left: 0;
+  top: 5px;
+  border-top: 4px solid var(--car-dark);
+  border-bottom: 2px solid var(--car-dark);
+}
+
+.car-drive__shell::after {
+  content: '';
+  position: absolute;
+  width: 2px;
+  height: 110px;
+  background-color: var(--car-dark);
+  left: 140px;
+  top: 5px;
+  transform: rotate(3deg);
+  box-shadow:
+    -65px 5px var(--car-dark),
+    78px 5px var(--car-dark);
+}
+
+.car-drive__front {
+  position: absolute;
+  width: 100px;
+  height: 55px;
+  background-color: var(--car-deep);
+  right: 30px;
+  top: 205px;
+  clip-path: polygon(0% 0%, 100% 20%, 100% 100%, 0% 100%);
+}
+
+.car-drive__front-line {
+  position: absolute;
+  width: 100px;
+  height: 10px;
+  background-color: var(--car);
+  right: 30px;
+  transform: rotate(6.3deg);
+  top: 212px;
+  border-bottom: 2px solid var(--car-dark);
+}
+
+.car-drive__front-line::after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 8px;
+  background-color: rgba(251, 243, 205, 0.69);
+  right: 22px;
+  top: -4px;
+  box-shadow: inset 0 -3px #000000c9;
+}
+
+.car-drive__front-line::before {
+  content: '';
+  position: absolute;
+  width: 95px;
+  height: 5px;
+  background-color: var(--car-mid);
+  top: -5px;
+  border-radius: 50% 50% 0 0;
+}
+
+.car-drive__shadow {
+  position: absolute;
+  background-color: rgba(154, 74, 8, 0.4);
+  width: 320px;
+  height: 30px;
+  bottom: 120px;
+  left: 30px;
+  box-shadow: inset 0 12px rgba(255, 142, 43, 0.15);
+}
+
+.car-drive__shadow::before {
+  content: '';
+  position: absolute;
+  background-color: rgba(255, 159, 77, 0.23);
+  width: 220px;
+  height: 8px;
+  bottom: 46px;
+  left: 0;
+}
+
+.car-drive__bottom {
+  position: absolute;
+  width: 320px;
+  height: 20px;
+  background-color: var(--car-dark);
+  left: 30px;
+  top: 260px;
+}
+
+.car-drive__bottom::before {
+  content: '';
+  position: absolute;
+  width: 50px;
+  height: 25px;
+  background-color: #c9783a;
+  left: -8px;
+  top: -5px;
+  border-radius: 5px 0 0 10px;
+  box-shadow:
+    inset -5px -8px rgba(0, 0, 0, 0.41),
+    inset -5px 3px rgba(255, 255, 255, 0.32);
+}
+
+.car-drive__wheel-bay {
+  position: absolute;
+  width: 100px;
+  height: 46px;
+  background-color: #000;
+  left: 40px;
+  top: 234px;
+  clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
+  box-shadow: 100px 0 #000;
+}
+
+.car-drive__wheel-bay--2 {
+  left: 235px;
+}
+
+.car-drive__rear {
+  position: absolute;
+  background-color: #210909;
+  width: 30px;
+  height: 70px;
+  left: 6px;
+  top: 175px;
+  border-radius: 8px;
+  transform: rotate(4deg);
+  box-shadow:
+    inset 6px -1px 0 -2px #656565,
+    inset 0 5px #606060,
+    inset 0 30px 0 -4px #2b2b2b;
+}
+
+.car-drive__window {
+  width: 55px;
+  height: 40px;
+  position: absolute;
+  background-color: #242424;
+  top: 160px;
+  left: 45px;
+  transform: skew(-5deg);
+  border-radius: 6px;
+  box-shadow: inset 0 0 0 2px #3d3d3d;
+}
+
+.car-drive__window::before {
+  content: '';
+  width: 48px;
+  height: 40px;
+  position: absolute;
+  background-color: #242424;
+  top: 0;
+  left: 72px;
+  border-radius: 6px;
+  box-shadow: inset 0 0 0 2px #3d3d3d;
+}
+
+.car-drive__window::after {
+  content: '';
+  width: 30px;
+  height: 40px;
+  position: absolute;
+  background-color: #242424;
+  top: 0;
+  left: 132px;
+  border-radius: 6px 6px 0 6px;
+  box-shadow:
+    inset 2px 0 #3d3d3d,
+    inset 0 2px #3d3d3d;
+}
+
+.car-drive__window-b {
+  width: 53px;
+  height: 20px;
+  position: absolute;
+  background-color: #242424;
+  top: 180px;
+  left: 180px;
+  border-radius: 0% 100% 10% 0% / 0% 80% 10% 4%;
+  box-shadow: inset 0 -2px #3d3d3d;
+}
+
+.car-drive__window-b::before {
+  content: '';
+  position: absolute;
+  width: 15px;
+  height: 42px;
+  background-color: #242424;
+  top: -18px;
+  right: 11px;
+  transform: rotate(-37deg);
+  border-radius: 0% 10% 0% 100%;
+  box-shadow: inset -2px 0 #3d3d3d;
+}
+
+.car-drive__window-b::after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 36px;
+  background-color: #3c3c3d;
+  top: -18px;
+  right: 25px;
+  transform: skew(37deg);
+  box-shadow:
+    -60px 0 #3c3c3d,
+    -130px 0 #3c3c3d;
+}
+
+.car-drive__window-c {
+  width: 4px;
+  height: 25px;
+  position: absolute;
+  background-color: #bbbcbc52;
+  top: 173px;
+  left: 189px;
+  transform: skew(38deg);
+  box-shadow:
+    -60px 0 #bbbcbc52,
+    -129px -1px #bbbcbc52;
+}
+
+.car-drive__window-c::before {
+  content: '';
+  width: 3px;
+  height: 55px;
+  position: absolute;
+  background-color: #000;
+  top: -22px;
+  left: 42px;
+}
+
+.car-drive__detail {
+  position: absolute;
+  width: 60px;
+  height: 4px;
+  background-color: #000;
+  top: 220px;
+  left: 40px;
+  box-shadow: 150px 0 #000;
+}
+
+.car-drive__detail::before {
+  content: '';
+  position: absolute;
+  width: 50px;
+  height: 4px;
+  background-color: #000;
+  top: 0;
+  right: -70px;
+  box-shadow:
+    15px 45px 0 0 #6f6f6f,
+    70px 45px 0 0 #6f6f6f,
+    50px 45px 0 0 #6f6f6f,
+    20px 50px 0 1px #3b3b3b,
+    66px 50px 0 1px #3b3b3b,
+    20px 50px 0 5px #000,
+    66px 50px 0 5px #000;
+}
+
+.car-drive__detail::after {
+  content: '';
+  position: absolute;
+  width: 70px;
+  height: 4px;
+  background-color: #000;
+  right: -230px;
+  transform: rotate(5deg);
+  bottom: -3px;
+}
+
+.car-drive__detail-b {
+  position: absolute;
+  width: 60px;
+  height: 8px;
+  background-color: var(--car);
+  top: 228px;
+  left: 60px;
+  box-shadow: 195px 2px var(--car);
+  border-radius: 17% 18% 26% 26% / 100% 100% 0% 0%;
+}
+
+.car-drive__detail-b::before {
+  content: '';
+  position: absolute;
+  width: 5px;
+  height: 54px;
+  background-color: var(--car);
+  transform: rotate(24deg);
+  left: -8.7px;
+  box-shadow: 178.1px -79px var(--car);
+}
+
+.car-drive__detail-b::after {
+  content: '';
+  position: absolute;
+  width: 4px;
+  height: 54px;
+  background-color: var(--car-deep);
+  transform: rotate(-24deg);
+  left: 65px;
+  box-shadow: 178.1px 79px var(--car-deep);
+}
+
+.car-drive__detail-d {
+  position: absolute;
+  width: 50px;
+  height: 3px;
+  background-color: rgba(255, 159, 77, 0.55);
+  top: 233px;
+  left: 64px;
+  box-shadow: 195px 2px rgba(255, 159, 77, 0.55);
+  border-radius: 17% 18% 26% 26% / 100% 100% 0% 0%;
+}
+
+.car-drive__detail-d::before {
+  content: '';
+  position: absolute;
+  width: 3px;
+  height: 50px;
+  background-color: rgba(255, 159, 77, 0.55);
+  transform: rotate(24deg);
+  left: -11px;
+  top: -2px;
+  box-shadow: 178.1px -77px 0 -0.5px rgba(255, 159, 77, 0.55);
+}
+
+.car-drive__detail-d::after {
+  content: '';
+  position: absolute;
+  width: 2px;
+  height: 50px;
+  background-color: rgba(255, 159, 77, 0.55);
+  transform: rotate(-24deg);
+  left: 60px;
+  top: -2px;
+  box-shadow: 177px 81px rgba(255, 159, 77, 0.55);
+}
+
+.car-drive__detail-c {
+  position: absolute;
+  width: 20px;
+  height: 15px;
+  background-color: #000;
+  bottom: 175px;
+  right: 146px;
+  box-shadow:
+    inset 0 2px #424141,
+    inset -2px 0 #1d1515,
+    inset 0 10px #252525;
+  border-radius: 4px 4px 0 4px;
+}
+
+.car-drive__detail-c::before {
+  position: absolute;
+  content: '';
+  width: 10px;
+  height: 4px;
+  background-color: rgba(0, 0, 0, 0.86);
+  left: -41px;
+  top: 30px;
+  box-shadow: -67px 0 #000;
+}
+
+.car-drive__detail-c::after {
+  position: absolute;
+  content: '';
+  width: 2px;
+  height: 2px;
+  background-color: rgba(179, 178, 178, 0.86);
+  left: -41px;
+  top: 30px;
+  box-shadow: -67px 0 #a7a7a7;
+}
+
+.car-drive__bumper {
+  position: absolute;
+  width: 20px;
+  height: 35px;
+  background-color: #000;
+  bottom: 100px;
+  right: 23px;
+  border-radius: 0% 20% 20% 0%;
+  box-shadow: inset -4px 0 #4f4f4f;
+}
+
+.car-drive__bumper::before {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 3px;
+  background-color: #696969;
+  box-shadow: 0 14px 0 -0.3px rgba(251, 251, 251, 0.32);
+}
+
+.car-drive__bumper::after {
+  content: '';
+  position: absolute;
+  width: 3px;
+  height: 25px;
+  background-color: #454545;
+  rotate: 8deg;
+  top: 3px;
+  left: -2px;
+}
+
+.car-drive__bumper-b {
+  position: absolute;
+  width: 25px;
+  height: 5px;
+  background-color: #272727;
+  bottom: 101px;
+  right: 23px;
+  rotate: 5deg;
+}
+
+.car-drive__detail-e {
+  position: absolute;
+  width: 100px;
+  height: 2px;
+  background-color: #bbbbbb;
+  bottom: 107px;
+  left: 138px;
+}
+
+.car-drive__detail-e::before {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 10px;
+  background-color: rgba(255, 255, 255, 0.1);
+  top: -80px;
+  left: -125px;
+  transform: rotate(5deg);
+  box-shadow:
+    inset 0 -3px rgba(255, 255, 255, 0.24),
+    0 40px 0 1px #000;
+}
+
+.car-drive__detail-e::after {
+  content: '';
+  position: absolute;
+  width: 170px;
+  height: 1px;
+  background-color: #000;
+  top: -120px;
+  left: -98px;
+  box-shadow: 0 -2px 0 1px #000;
+}
+
+.car-drive__logo {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 1px 4px 1px;
+  border-color: transparent transparent #fff transparent;
+  z-index: 1;
+}
+
+.car-drive__logo::before,
+.car-drive__logo::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 1px 4px 1px;
+  border-color: transparent transparent #fff transparent;
+}
+
+.car-drive__logo::before {
+  transform: rotate(-65deg);
+  right: 1px;
+}
+
+.car-drive__logo::after {
+  transform: rotate(65deg);
+  left: 1px;
+}
+
+.car-drive__headlight {
+  position: absolute;
+  width: 16px;
+  height: 20px;
+  background-color: #d4cfa6;
+  left: 334px;
+  bottom: 140px;
+  box-shadow:
+    inset 3px 0 var(--car-dark),
+    inset -5px 0 #d4894a,
+    inset -5px 0 var(--car-deep);
+}
+
+.car-drive__headlight::before {
+  content: '';
+  position: absolute;
+  width: 4px;
+  height: 15px;
+  background-color: var(--car-dark);
+  left: 11px;
+  bottom: 0;
+}
+
+.car-drive__headlight::after {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background-color: rgba(154, 74, 8, 0.5);
+  left: 3px;
+  bottom: 0;
+  box-shadow: -1px -13px 0 -1px rgba(254, 254, 235, 0.57);
+}
+
+.car-drive__taillight {
+  position: absolute;
+  width: 4px;
+  height: 10px;
+  background-color: var(--accent);
+  right: 348px;
+  bottom: 125px;
+  box-shadow: inset -2px 0 var(--accent-deep);
+}
+
+.car-drive__taillight::before {
+  content: '';
+  position: absolute;
+  width: 14px;
+  height: 16px;
+  background-color: rgba(255, 142, 43, 0.29);
+  left: -4px;
+}
+
+.car-drive__glow {
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.71);
+  height: 1.5px;
+  width: 50px;
+  bottom: 145px;
+  left: 65px;
+  box-shadow: 195px 2px rgba(255, 255, 255, 0.71);
+}
+
+.car-drive__glow::before {
+  content: '';
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.29);
+  height: 2px;
+  width: 115px;
+  top: 10px;
+  left: 65px;
+  box-shadow: -30px -35px 0 1px rgba(255, 255, 255, 0.2);
+}
+
+.car-drive__glow::after {
+  content: '';
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.57);
+  height: 2px;
+  width: 80px;
+  top: -22px;
+  left: 190px;
+  rotate: 8deg;
+  box-shadow: 0 -3px rgba(0, 0, 0, 0.35);
+}
+
+.car-drive__glow-b {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.23);
+  height: 12px;
+  width: 10px;
+  bottom: 165px;
+  left: 220px;
+  rotate: 15deg;
+}
+
+.car-drive__glow-b::before {
+  content: '';
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.31);
+  height: 8px;
+  width: 10px;
+  bottom: 5px;
+  left: 0;
+  rotate: -15deg;
+}
+
+.car-drive__glow-c {
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.09);
+  height: 45px;
+  width: 5px;
+  bottom: 175px;
+  left: 100px;
+  rotate: 5deg;
+  box-shadow:
+    10px 0 rgba(255, 255, 255, 0.14),
+    65px -5px rgba(255, 255, 255, 0.14);
+}
+
+.car-drive__glow-c::before {
+  content: '';
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.42);
+  height: 1px;
+  width: 25px;
+  bottom: -33px;
+  left: 240px;
+  rotate: -5deg;
+  box-shadow: 1px -12px rgba(255, 255, 255, 0.54);
+}
+
+/* Street */
+.car-drive__street {
+  position: absolute;
+  width: 600px;
+  height: 450px;
+  left: 50%;
+  bottom: 0;
+  margin-left: -300px;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.car-drive__line {
+  position: absolute;
+  width: 100%;
+  height: 4px;
+  background-color: var(--bg-secondary);
+  bottom: 62px;
+}
+
+.car-drive__obstacle {
+  position: absolute;
+  width: 20px;
+  height: 15px;
+  background-color: var(--bg-secondary);
+  border-radius: 40% 40% 0 0;
+  bottom: 60px;
+  left: 110%;
+  animation: car-drive-road 3s linear infinite;
+}
+
+/* Wheels — same coords as original */
+.car-drive__wheel {
+  width: 80px;
+  height: 80px;
+  position: absolute;
+  bottom: 60px;
+  z-index: 2;
+}
+
+.car-drive__wheel--1 {
+  left: 50px;
+  animation: car-drive-bounce-1 3s infinite;
+}
+
+.car-drive__wheel--2 {
+  left: 245px;
+  animation: car-drive-bounce-2 3s infinite;
+}
+
+.car-drive__brake {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  border-radius: 50%;
+  background-color: #b7bdd3;
+  bottom: 25px;
+  left: 25px;
+}
+
+.car-drive__brake::after {
+  content: '';
+  position: absolute;
+  background-color: var(--accent-deep);
+  width: 8px;
+  height: 15px;
+  right: -1px;
+  top: 8px;
+  border-radius: 0% 100% 100% 0% / 0% 50% 50% 0%;
+}
+
+.car-drive__brake::before {
+  content: '';
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: #000;
+  top: 3.5px;
+  left: 3.5px;
+  border: 4px solid #5a6486;
+}
+
+.car-drive__brake--rear::after {
+  width: 10px;
+  height: 25px;
+  left: -2px;
+  right: auto;
+  top: 3px;
+  border-radius: 100% 0% 0% 100% / 50% 0% 0% 50%;
+}
+
+.car-drive__ring {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  left: 10px;
+  top: 10px;
+  border: 6px solid #222;
+  box-shadow:
+    0 0 0 4px #3f3f3f,
+    inset 0 0 0 2px #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: car-drive-spin 1s linear infinite;
+}
+
+.car-drive__hub {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #fff;
+  box-shadow:
+    inset 0 0 0 5px #000,
+    inset 0 0 0 6px #bfbfbf,
+    inset 0 0 0 12px #000;
+}
+
+.car-drive__hub-ring {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  z-index: 1;
+  border: 1px solid #fff;
+}
+
+.car-drive__spoke {
+  position: absolute;
+  width: 4px;
+  height: 18px;
+  background-color: #000;
+  top: 32px;
+  left: 19px;
+  transform: rotate(15deg);
+}
+
+.car-drive__spoke::before {
+  content: '';
+  position: absolute;
+  width: 4px;
+  height: 18px;
+  background-color: #000;
+  top: -2px;
+  left: 8px;
+  transform: rotate(-20deg);
+}
+
+.car-drive__spoke--2 {
+  transform: rotate(82deg);
+  left: 8px;
+  top: 16px;
+}
+
+.car-drive__spoke--3 {
+  left: 34px;
+  top: 25px;
+  transform: rotate(-55deg);
+}
+
+.car-drive__spoke--4 {
+  top: 2px;
+  left: 17px;
+  transform: rotate(155deg);
+}
+
+.car-drive__spoke--5 {
+  top: 7px;
+  left: 36px;
+  transform: rotate(225deg);
+}
+
+@keyframes car-drive-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes car-drive-bounce-1 {
+  0%,
+  50% {
+    transform: translateY(0);
+  }
+  52% {
+    transform: translateY(-5px);
+  }
+  65% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes car-drive-bounce-2 {
+  0%,
+  28% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-5px);
+  }
+  45% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes car-drive-lift {
+  0%,
+  30% {
+    transform: rotate(0deg) translateY(0);
+  }
+  32% {
+    transform: rotate(-1.5deg) translateY(-2px);
+  }
+  48%,
+  50% {
+    transform: rotate(0deg) translateY(0);
+  }
+  56.5% {
+    transform: rotate(1deg) translateY(-1px);
+  }
+  68% {
+    transform: rotate(0deg) translateY(0);
+  }
+}
+
+@keyframes car-drive-road {
+  from {
+    left: 110%;
+  }
+  to {
+    left: -40%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .car-drive__body,
+  .car-drive__ring,
+  .car-drive__wheel--1,
+  .car-drive__wheel--2,
+  .car-drive__obstacle {
+    animation: none;
+  }
+
+  .car-drive__obstacle {
+    left: 55%;
+  }
+}
