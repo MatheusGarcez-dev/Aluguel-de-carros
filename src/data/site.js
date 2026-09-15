@@ -61,7 +61,7 @@ export const FLEET_CATEGORIES = [
   { id: 'premium', label: 'Premium' },
 ]
 
-/** Dados alinhados ao catálogo do site antigo (grupos A–N). */
+/** Dados alinhados ao catálogo do site antigo (grupos A–P). */
 export const FLEET_GROUPS = [
   {
     group: 'A',
@@ -146,5 +146,17 @@ export const FLEET_GROUPS = [
     category: 'utilitario',
     models: 'Peugeot Expert',
     description: 'Mini van 8 lugares',
+  },
+  {
+    group: 'O',
+    category: 'utilitario',
+    models: 'Strada, Saveiro ou similar',
+    description: 'Picape compacta',
+  },
+  {
+    group: 'P',
+    category: 'utilitario',
+    models: 'Fiorino, Kangoo ou similar',
+    description: 'Furgão compacto',
   },
 ]

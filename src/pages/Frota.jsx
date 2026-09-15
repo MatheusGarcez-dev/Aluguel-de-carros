@@ -24,6 +24,8 @@ import imgGrupoK from '../assets/carros/grupo-k.png'
 import imgGrupoL from '../assets/carros/grupo-l.png'
 import imgGrupoM from '../assets/carros/grupo-m.png'
 import imgGrupoN from '../assets/carros/grupo-n.png'
+import imgGrupoO from '../assets/carros/grupo-o.png'
+import imgGrupoP from '../assets/carros/grupo-p.png'
 
 const FLEET_IMAGES = {
   A: imgGrupoA,
@@ -40,6 +42,8 @@ const FLEET_IMAGES = {
   L: imgGrupoL,
   M: imgGrupoM,
   N: imgGrupoN,
+  O: imgGrupoO,
+  P: imgGrupoP,
 }
 
 function IconCar() {

@@ -44,7 +44,7 @@ function IconCheck() {
 
 const METRICS = [
   { value: '2018', label: 'No mercado' },
-  { value: '14', label: 'Grupos de frota' },
+  { value: '22', label: 'Grupos de frota' },
   { value: 'BR', label: 'Cobertura nacional' },
 ]
 
