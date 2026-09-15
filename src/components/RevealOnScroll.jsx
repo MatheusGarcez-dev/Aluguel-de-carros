@@ -18,6 +18,7 @@ const REVEAL_SELECTOR = [
   'main .promo-page__footer',
   'main .empresa-intro__grid > *',
   'main .empresa-split__grid > *',
+  'main .reviews__header',
   'main .outsource-intro__grid > *',
   'main .outsource-transfer__grid > *',
   'main .outsource-benefits > *',

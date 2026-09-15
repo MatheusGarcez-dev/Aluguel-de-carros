@@ -1,5 +1,6 @@
 import PageHero from '../components/PageHero'
 import BorderGlow from '../components/BorderGlow'
+import ReviewsCarousel from '../components/ReviewsCarousel'
 import { whatsappLink } from '../data/site'
 import logo3d from '../assets/logo-3d.png'
 import aboutImage from '../assets/sobre.png'
@@ -179,6 +180,8 @@ export default function Empresa() {
           </div>
         </div>
       </section>
+
+      <ReviewsCarousel />
     </>
   )
 }

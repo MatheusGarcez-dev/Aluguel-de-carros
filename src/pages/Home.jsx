@@ -6,6 +6,7 @@ import { useGSAP } from '@gsap/react'
 import Hero from '../components/Hero'
 import CarDrive from '../components/CarDrive'
 import BorderGlow from '../components/BorderGlow'
+import ReviewsCarousel from '../components/ReviewsCarousel'
 import { PROMOS, PROMO_EXCLUDED, whatsappLink } from '../data/site'
 import aboutImage from '../assets/sobre.png'
 import logoMark from '../assets/logo-aluguel.png'
@@ -264,9 +265,9 @@ export default function Home() {
         scrollTrigger: {
           trigger: wipe,
           start: 'top top',
-          end: '+=220%',
+          end: '+=140%',
           pin: true,
-          scrub: 1.6,
+          scrub: 0.85,
           anticipatePin: 1,
           invalidateOnRefresh: true,
         },
@@ -556,6 +557,8 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        <ReviewsCarousel />
       </div>
 
       <section
