@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
-import HeroCarousel from '../components/HeroCarousel'
+import Hero from '../components/Hero'
 import BorderGlow from '../components/BorderGlow'
 import { PROMOS, PROMO_EXCLUDED, whatsappLink } from '../data/site'
 import aboutImage from '../assets/sobre.png'
@@ -185,6 +185,63 @@ export default function Home() {
   useGSAP(
     () => {
       const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      if (reduce) return
+
+      const section = root.current?.querySelector('.about-home')
+      if (!section) return
+
+      const contentBits = section.querySelectorAll(
+        '.about-home__content > .section__eyebrow, .about-home__content > .section__title, .about-home__content > .section__lead, .about-marquee, .about-home__actions'
+      )
+      const media = section.querySelector('.about-home__media')
+      const targets = [...contentBits, media].filter(Boolean)
+      if (!targets.length) return
+
+      gsap.set(targets, {
+        opacity: 0,
+        y: 36,
+        filter: 'blur(14px)',
+      })
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: 'top 78%',
+          once: true,
+        },
+      })
+
+      tl.to(contentBits, {
+        opacity: 1,
+        y: 0,
+        filter: 'blur(0px)',
+        duration: 0.95,
+        stagger: 0.12,
+        ease: 'power3.out',
+        clearProps: 'filter,transform,opacity',
+      })
+
+      if (media) {
+        tl.to(
+          media,
+          {
+            opacity: 1,
+            y: 0,
+            filter: 'blur(0px)',
+            duration: 1.05,
+            ease: 'power3.out',
+            clearProps: 'filter,transform,opacity',
+          },
+          0.2
+        )
+      }
+    },
+    { scope: root, dependencies: [] }
+  )
+
+  useGSAP(
+    () => {
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
       const wipe = wipeRef.current
       if (!wipe || reduce) return
 
@@ -356,7 +413,7 @@ export default function Home() {
   return (
     <div ref={root} className="home">
       <div className="home__light">
-        <HeroCarousel />
+        <Hero />
 
         <section className="trust" aria-label="Diferenciais">
           <div className="trust__frame">

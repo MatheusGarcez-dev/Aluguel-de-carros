@@ -47,7 +47,7 @@ function collectTargets() {
   const nodes = Array.from(document.querySelectorAll(REVEAL_SELECTOR))
   return nodes.filter((el, index, list) => {
     if (!(el instanceof HTMLElement)) return false
-    if (el.closest('.site-header, .whatsapp-float, .hero-carousel, .about-home'))
+    if (el.closest('.site-header, .whatsapp-float, .hero, .about-home'))
       return false
     // avoid nested duplicates (parent already targeted)
     return !list.some(
