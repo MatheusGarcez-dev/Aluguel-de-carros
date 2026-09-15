@@ -454,8 +454,8 @@ export default function Home() {
         </section>
 
         <section className="section features-section">
+          <CarDrive />
           <div className="container">
-            <CarDrive />
             <div className="section__header">
               <span className="section__eyebrow">Extras</span>
               <h2 className="section__title">O essencial para a sua viagem</h2>

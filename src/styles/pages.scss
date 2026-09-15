@@ -885,6 +885,11 @@ body:has(.home__dark) .site-footer__curve {
 /* —— Features —— */
 .features-section {
   background: var(--bg-primary);
+  overflow-x: clip;
+}
+
+.features-section .car-drive {
+  margin-top: -0.5rem;
 }
 
 .features-section .section__header {

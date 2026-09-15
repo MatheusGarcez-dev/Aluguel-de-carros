@@ -5,33 +5,91 @@
   --car-mid: var(--accent-soft);
   --car-deep: var(--accent-deep);
   --car-dark: #9a4a08;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  margin-bottom: clamp(0.5rem, 2vw, 1.25rem);
-  overflow: visible;
+  --car-scale: 0.72;
+  --car-width: calc(380px * var(--car-scale));
+  --road-height: 4.5rem;
+  position: relative;
+  width: 100vw;
+  max-width: 100vw;
+  margin-left: calc(50% - 50vw);
+  height: clamp(10.5rem, 20vw, 13.5rem);
+  margin-bottom: clamp(1rem, 3vw, 2rem);
+  overflow: hidden;
+  pointer-events: none;
 }
 
-/* Same coordinate space as the original 380×380 demo */
+/* Full-bleed street */
+.car-drive__street {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: var(--road-height);
+  z-index: 0;
+}
+
+.car-drive__pavement {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(36, 36, 36, 0.06) 18%,
+      rgba(36, 36, 36, 0.14) 100%
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(36, 36, 36, 0.04) 0 12px,
+      transparent 12px 28px
+    );
+  border-top: 2px solid rgba(36, 36, 36, 0.18);
+}
+
+.car-drive__line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 3px;
+  margin-top: -1px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--bg-secondary) 0 2.25rem,
+    transparent 2.25rem 4.5rem
+  );
+}
+
+/* Vehicle travels left → right across the site */
+.car-drive__vehicle {
+  position: absolute;
+  left: 0;
+  bottom: calc(var(--road-height) - 3.4rem);
+  width: var(--car-width);
+  height: calc(250px * var(--car-scale));
+  z-index: 1;
+  animation: car-drive-across 11s linear infinite;
+  will-change: transform;
+}
+
 .car-drive__scene {
-  position: relative;
+  position: absolute;
+  left: 0;
+  bottom: 0;
   width: 380px;
   height: 380px;
-  flex-shrink: 0;
-  margin-inline: auto;
+  transform: scale(var(--car-scale));
+  transform-origin: left bottom;
 }
 
-@media (max-width: 520px) {
+@media (max-width: 720px) {
   .car-drive {
-    height: 300px;
-    align-items: flex-end;
-    overflow: hidden;
+    --car-scale: 0.58;
+    --road-height: 3.75rem;
+    height: 9.5rem;
   }
 
-  .car-drive__scene {
-    transform: scale(0.78);
-    transform-origin: center bottom;
-    margin-bottom: -40px;
+  .car-drive__vehicle {
+    animation-duration: 8.5s;
   }
 }
 
@@ -42,7 +100,6 @@
   left: 0;
   top: 0;
   z-index: 1;
-  animation: car-drive-lift 3s infinite cubic-bezier(0.96, 0.5, 0.27, 0.55);
   transform-origin: center;
 }
 
@@ -676,39 +733,8 @@
   box-shadow: 1px -12px rgba(255, 255, 255, 0.54);
 }
 
-/* Street */
-.car-drive__street {
-  position: absolute;
-  width: 600px;
-  height: 450px;
-  left: 50%;
-  bottom: 0;
-  margin-left: -300px;
-  z-index: 0;
-  overflow: hidden;
-  pointer-events: none;
-}
+/* Street handled above — vehicle wheels */
 
-.car-drive__line {
-  position: absolute;
-  width: 100%;
-  height: 4px;
-  background-color: var(--bg-secondary);
-  bottom: 62px;
-}
-
-.car-drive__obstacle {
-  position: absolute;
-  width: 20px;
-  height: 15px;
-  background-color: var(--bg-secondary);
-  border-radius: 40% 40% 0 0;
-  bottom: 60px;
-  left: 110%;
-  animation: car-drive-road 3s linear infinite;
-}
-
-/* Wheels — same coords as original */
 .car-drive__wheel {
   width: 80px;
   height: 80px;
@@ -719,12 +745,10 @@
 
 .car-drive__wheel--1 {
   left: 50px;
-  animation: car-drive-bounce-1 3s infinite;
 }
 
 .car-drive__wheel--2 {
   left: 245px;
-  animation: car-drive-bounce-2 3s infinite;
 }
 
 .car-drive__brake {
@@ -858,71 +882,23 @@
   }
 }
 
-@keyframes car-drive-bounce-1 {
-  0%,
-  50% {
-    transform: translateY(0);
-  }
-  52% {
-    transform: translateY(-5px);
-  }
-  65% {
-    transform: translateY(0);
-  }
-}
-
-@keyframes car-drive-bounce-2 {
-  0%,
-  28% {
-    transform: translateY(0);
-  }
-  30% {
-    transform: translateY(-5px);
-  }
-  45% {
-    transform: translateY(0);
-  }
-}
-
-@keyframes car-drive-lift {
-  0%,
-  30% {
-    transform: rotate(0deg) translateY(0);
-  }
-  32% {
-    transform: rotate(-1.5deg) translateY(-2px);
-  }
-  48%,
-  50% {
-    transform: rotate(0deg) translateY(0);
-  }
-  56.5% {
-    transform: rotate(1deg) translateY(-1px);
-  }
-  68% {
-    transform: rotate(0deg) translateY(0);
-  }
-}
-
-@keyframes car-drive-road {
+@keyframes car-drive-across {
   from {
-    left: 110%;
+    transform: translate3d(-105%, 0, 0);
   }
   to {
-    left: -40%;
+    transform: translate3d(100vw, 0, 0);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .car-drive__body,
-  .car-drive__ring,
-  .car-drive__wheel--1,
-  .car-drive__wheel--2,
-  .car-drive__obstacle {
+  .car-drive__vehicle,
+  .car-drive__ring {
     animation: none;
   }
 
-  .car-drive__obstacle {
-    left: 55%;
+  .car-drive__vehicle {
+    left: 50%;
+    transform: translate3d(-50%, 0, 0);
   }
 }
