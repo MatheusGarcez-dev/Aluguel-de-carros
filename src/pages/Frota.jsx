@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import PageHero from '../components/PageHero'
+import WhatsAppCta from '../components/WhatsAppCta'
 import {
   EMAIL,
   FLEET_CATEGORIES,
@@ -190,6 +191,14 @@ export default function Frota() {
 
       <section className="section fleet-catalog">
         <div className="container">
+          <WhatsAppCta
+            className="fleet-catalog__cta"
+            full
+            href={whatsappLink('Olá! Quero consultar grupos disponíveis e tarifas.')}
+          >
+            Receber cotação agora
+          </WhatsAppCta>
+
           <div className="fleet-catalog__toolbar">
             <div className="fleet-catalog__intro">
               <h2 className="section__title">Grupos disponíveis</h2>

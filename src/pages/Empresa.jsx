@@ -1,6 +1,7 @@
 import PageHero from '../components/PageHero'
 import BorderGlow from '../components/BorderGlow'
 import ReviewsCarousel from '../components/ReviewsCarousel'
+import WhatsAppCta from '../components/WhatsAppCta'
 import { whatsappLink } from '../data/site'
 import logo3d from '../assets/logo-3d.png'
 import aboutImage from '../assets/sobre.png'
@@ -52,17 +53,17 @@ const METRICS = [
 const PILLARS = [
   {
     title: 'Consulta em um só lugar',
-    text: 'Você descreve o período e o destino. Nós verificamos disponibilidade e condições com a rede de parceiros.',
+    text: 'Informe as datas e o que precisa. Nós consultamos opções e tarifas com parceiros em todo o Brasil.',
     icon: IconSearch,
   },
   {
-    title: 'Atendimento humano',
-    text: 'Sem chatbot no meio do caminho. A conversa acontece no WhatsApp, com resposta objetiva sobre o que dá para reservar.',
+    title: 'Atendimento humanizado',
+    text: 'Suporte pelo WhatsApp para ajudar você a encontrar a opção mais adequada à sua viagem.',
     icon: IconChat,
   },
   {
-    title: 'Condições antes do fechamento',
-    text: 'Diária, quilometragem, extras e restrições de período ficam claros antes de você confirmar a reserva.',
+    title: 'Reserva mais simples e segura',
+    text: 'Unimos tecnologia, eficiência e atendimento personalizado desde o primeiro contato.',
     icon: IconCheck,
   },
 ]
@@ -72,24 +73,35 @@ export default function Empresa() {
     <>
       <PageHero
         eyebrow="A Empresa"
-        title="Aluguel de carro com atendimento direto"
-        lead="Desde 2018 a AlugueldeCarros.org organiza consultas de frota e tarifas para pessoas e empresas em todo o Brasil."
+        title="Aluguel de carro com atendimento humanizado"
+        lead="Desde 2018 unimos tecnologia, eficiência e atendimento personalizado para tornar o processo de aluguel de carros mais simples e seguro."
       />
 
       <section className="section empresa-intro">
         <div className="container empresa-intro__grid">
           <div className="empresa-intro__copy">
             <h2 className="empresa-intro__title">
-              Menos busca. Mais opções na mesa.
+              Sobre a AlugueldeCarros.org
             </h2>
             <p>
-              Em vez de ligar para várias locadoras, você fala com a gente uma vez.
-              Informamos o que está disponível para o seu período, com modelos
-              equivalentes por grupo e valores sob consulta.
+              A AlugueldeCarros.org atua no mercado de locação de veículos
+              oferecendo aos clientes uma forma prática de consultar opções de
+              carros, disponibilidade e tarifas para sua viagem. Nosso
+              atendimento é realizado de forma humanizada, com suporte pelo
+              WhatsApp para ajudar você a encontrar a opção mais adequada para
+              sua necessidade.
             </p>
             <p>
-              O foco é prático: datas, cidade de retirada, perfil do veículo e
-              eventuais extras — GPS, cadeira infantil ou devolução em outra praça.
+              A nível Brasil, trabalhamos com parceiros do setor de locação de
+              veículos, possibilitando consultar diferentes opções de veículos e
+              condições de aluguel. Dessa forma, você conta com a praticidade de
+              resolver sua locação através de um único atendimento, sem precisar
+              perder tempo procurando diferentes alternativas.
+            </p>
+            <p>
+              Nossa atuação no mercado começou em 2018 e, desde então, buscamos
+              unir tecnologia, eficiência e atendimento personalizado para tornar
+              o processo de aluguel de carros mais simples e seguro.
             </p>
 
             <dl className="empresa-metrics">
@@ -127,32 +139,28 @@ export default function Empresa() {
           </figure>
 
           <div className="empresa-split__copy">
-            <p className="empresa-kicker">Como funciona</p>
-            <h2>Do pedido à reserva, sem rodeio</h2>
-            <ol className="empresa-process">
-              <li>
-                <strong>Você envia o pedido</strong>
-                <span>Período, local e tipo de veículo no WhatsApp.</span>
-              </li>
-              <li>
-                <strong>Consultamos a disponibilidade</strong>
-                <span>Grupos e condições alinhados ao que você precisa.</span>
-              </li>
-              <li>
-                <strong>Você escolhe e confirma</strong>
-                <span>Com as regras da diária e do período já esclarecidas.</span>
-              </li>
-            </ol>
-            <a
-              className="btn"
+            <p className="empresa-kicker">Por que alugar conosco</p>
+            <h2>Por que alugar um carro com a AlugueldeCarros.org?</h2>
+            <p>
+              Nossa proposta é facilitar sua reserva desde o primeiro contato.
+              Você informa as datas da locação e suas necessidades, e nossa
+              equipe auxilia na consulta das opções disponíveis.
+            </p>
+            <p>
+              Se você está procurando aluguel de carros em qualquer estado do
+              Brasil, fale com nossa equipe e consulte as opções disponíveis
+              para o período da sua viagem.
+            </p>
+            <p>
+              Solicite sua cotação e encontre a melhor opção para sua viagem.
+            </p>
+            <WhatsAppCta
               href={whatsappLink(
-                'Olá! Quero conhecer melhor o atendimento da AlugueldeCarros.org.'
+                'Olá! Quero solicitar uma cotação de aluguel de carro.'
               )}
-              target="_blank"
-              rel="noopener noreferrer"
             >
-              Falar com a equipe
-            </a>
+              Solicitar cotação
+            </WhatsAppCta>
           </div>
         </div>
       </section>
@@ -161,7 +169,7 @@ export default function Empresa() {
         <div className="container">
           <div className="section__header">
             <span className="section__eyebrow">O que nos diferencia</span>
-            <h2 className="section__title">Operação enxuta, conversa objetiva</h2>
+            <h2 className="section__title">Praticidade, cobertura e atendimento</h2>
           </div>
 
           <div className="features__grid">

@@ -1,3 +1,5 @@
+import logo from '../assets/logo-aluguel.png'
+
 export default function CarDrive() {
   return (
     <div className="car-drive" aria-hidden="true">
@@ -8,6 +10,20 @@ export default function CarDrive() {
 
       <div className="car-drive__vehicle">
         <div className="car-drive__scene">
+          <div className="car-drive__flag">
+            <span className="car-drive__flag-pole" />
+            <span className="car-drive__flag-cloth">
+              <img
+                className="car-drive__flag-logo"
+                src={logo}
+                alt=""
+                width={168}
+                height={40}
+                decoding="async"
+              />
+            </span>
+          </div>
+
           <div className="car-drive__body">
             <div className="car-drive__shell" />
             <div className="car-drive__front" />

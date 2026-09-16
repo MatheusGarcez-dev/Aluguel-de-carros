@@ -6,6 +6,7 @@ import { useGSAP } from '@gsap/react'
 import logo from '../assets/logo-aluguel.png'
 import { NAV_LINKS, whatsappLink } from '../data/site'
 import { useSmoothScroll } from './SmoothScroll'
+import WhatsAppCta from './WhatsAppCta'
 
 gsap.registerPlugin(useGSAP)
 
@@ -159,16 +160,15 @@ export default function Header() {
             </nav>
 
             <div className="site-header__panel-footer">
-              <a
-                className="btn btn--full"
+              <WhatsAppCta
+                full
+                showOnline={false}
                 href={whatsappLink()}
-                target="_blank"
-                rel="noopener noreferrer"
                 onClick={close}
                 tabIndex={open ? 0 : -1}
               >
                 Solicitar cotação
-              </a>
+              </WhatsAppCta>
             </div>
           </div>
         </div>
@@ -206,15 +206,14 @@ export default function Header() {
             </nav>
 
             <div className="site-header__actions">
-              <a
-                className="btn site-header__cta"
+              <WhatsAppCta
+                showOnline={false}
                 href={whatsappLink()}
-                target="_blank"
-                rel="noopener noreferrer"
+                buttonClassName="site-header__cta"
               >
                 <IconWhatsApp />
                 Solicitar cotação
-              </a>
+              </WhatsAppCta>
             </div>
 
             <button

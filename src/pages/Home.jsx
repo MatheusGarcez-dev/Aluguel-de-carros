@@ -7,9 +7,9 @@ import Hero from '../components/Hero'
 import CarDrive from '../components/CarDrive'
 import BorderGlow from '../components/BorderGlow'
 import ReviewsCarousel from '../components/ReviewsCarousel'
+import WhatsAppCta from '../components/WhatsAppCta'
 import { PROMOS, PROMO_EXCLUDED, whatsappLink } from '../data/site'
 import aboutImage from '../assets/sobre.png'
-import logoMark from '../assets/logo-aluguel.png'
 import logo3d from '../assets/logo-3d.png'
 
 gsap.registerPlugin(useGSAP, ScrollTrigger)
@@ -145,7 +145,6 @@ const ABOUT_MARQUEE = [
 
 export default function Home() {
   const root = useRef(null)
-  const wipeRef = useRef(null)
 
   useGSAP(
     () => {
@@ -241,177 +240,6 @@ export default function Home() {
     { scope: root, dependencies: [] }
   )
 
-  useGSAP(
-    () => {
-      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-      const wipe = wipeRef.current
-      if (!wipe || reduce) return
-
-      const veil = wipe.querySelector('.home-wipe__veil')
-      const core = wipe.querySelector('.home-wipe__core')
-      const logo = wipe.querySelector('.home-wipe__logo')
-      const rings = wipe.querySelectorAll('.home-wipe__ring')
-      const hint = wipe.querySelector('.home-wipe__hint')
-      if (!veil || !core) return
-
-      gsap.set(veil, { clipPath: 'circle(0% at 50% 50%)' })
-      gsap.set(core, { scale: 0.72, opacity: 0 })
-      if (logo) gsap.set(logo, { opacity: 0, scale: 0.88, filter: 'blur(10px)' })
-      if (rings.length) gsap.set(rings, { scale: 0.55, opacity: 0 })
-      if (hint) gsap.set(hint, { opacity: 0, y: 16 })
-
-      const tl = gsap.timeline({
-        defaults: { ease: 'sine.inOut' },
-        scrollTrigger: {
-          trigger: wipe,
-          start: 'top top',
-          end: '+=140%',
-          pin: true,
-          scrub: 0.85,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-        },
-      })
-
-      tl.to(
-        core,
-        {
-          scale: 1,
-          opacity: 1,
-          duration: 0.32,
-          ease: 'power3.out',
-        },
-        0
-      )
-
-      if (logo) {
-        tl.to(
-          logo,
-          {
-            opacity: 1,
-            scale: 1,
-            filter: 'blur(0px)',
-            duration: 0.4,
-            ease: 'power2.out',
-          },
-          0.04
-        )
-      }
-
-      if (rings.length) {
-        tl.to(
-          rings,
-          {
-            scale: 1,
-            opacity: 1,
-            duration: 0.45,
-            stagger: 0.08,
-            ease: 'power2.out',
-          },
-          0.1
-        )
-      }
-
-      if (hint) {
-        tl.to(
-          hint,
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.3,
-            ease: 'power2.out',
-          },
-          0.12
-        )
-      }
-
-      tl.to(
-        veil,
-        {
-          clipPath: 'circle(16% at 50% 50%)',
-          duration: 0.4,
-          ease: 'sine.out',
-        },
-        0.28
-      )
-
-      if (rings.length) {
-        tl.to(
-          rings,
-          {
-            scale: (i) => 1.35 + i * 0.45,
-            opacity: 0,
-            duration: 0.7,
-            stagger: 0.06,
-            ease: 'power1.out',
-          },
-          0.45
-        )
-      }
-
-      tl.to(
-        veil,
-        {
-          clipPath: 'circle(72% at 50% 50%)',
-          duration: 0.55,
-          ease: 'sine.inOut',
-        },
-        0.6
-      )
-
-      tl.to(
-        veil,
-        {
-          clipPath: 'circle(160% at 50% 50%)',
-          duration: 0.5,
-          ease: 'power2.inOut',
-        },
-        1.1
-      )
-
-      if (hint) {
-        tl.to(
-          hint,
-          {
-            opacity: 0,
-            y: -8,
-            duration: 0.35,
-            ease: 'sine.in',
-          },
-          0.9
-        )
-      }
-
-      if (logo) {
-        tl.to(
-          logo,
-          {
-            opacity: 0,
-            scale: 1.12,
-            filter: 'blur(8px)',
-            duration: 0.4,
-            ease: 'sine.in',
-          },
-          0.95
-        )
-      }
-
-      tl.to(
-        core,
-        {
-          opacity: 0,
-          scale: 1.06,
-          duration: 0.35,
-          ease: 'sine.in',
-        },
-        1.05
-      )
-
-      ScrollTrigger.refresh()
-    },
-    { scope: root, dependencies: [] }
-  )
-
   return (
     <div ref={root} className="home">
       <div className="home__light">
@@ -443,14 +271,9 @@ export default function Home() {
             <p className="wa-strip__text">
               Precisa de um carro? Cotação rápida no WhatsApp.
             </p>
-            <a
-              className="btn"
-              href={whatsappLink('Olá! Quero receber uma cotação de aluguel de carro.')}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <WhatsAppCta href={whatsappLink('Olá! Quero receber uma cotação de aluguel de carro.')}>
               Receber cotação agora
-            </a>
+            </WhatsAppCta>
           </div>
         </section>
 
@@ -485,16 +308,13 @@ export default function Home() {
               </BorderGlow>
             </div>
             <div className="features-section__cta">
-              <a
-                className="btn"
+              <WhatsAppCta
                 href={whatsappLink(
                   'Olá! Quero consultar extras (GPS, cadeira para bebê ou devolução flexível).'
                 )}
-                target="_blank"
-                rel="noopener noreferrer"
               >
                 Consultar extras no WhatsApp
-              </a>
+              </WhatsAppCta>
             </div>
           </div>
         </section>
@@ -561,31 +381,21 @@ export default function Home() {
         <ReviewsCarousel />
       </div>
 
-      <section
-        ref={wipeRef}
-        className="home-wipe"
-        aria-hidden="true"
-      >
-        <div className="home-wipe__stage">
-          <div className="home-wipe__veil" />
-          <div className="home-wipe__core">
-            <span className="home-wipe__ring" />
-            <span className="home-wipe__ring" />
-            <span className="home-wipe__ring" />
-            <div className="home-wipe__disc">
-              <img
-                className="home-wipe__logo"
-                src={logoMark}
-                alt=""
-                width={160}
-                height={40}
-                decoding="async"
-              />
-            </div>
-          </div>
-          <p className="home-wipe__hint">Promoções e frota corporativa</p>
+      <div className="home-divider" aria-hidden="true">
+        <div className="home-divider__rule">
+          <span className="home-divider__line" />
+          <span className="home-divider__gem" />
+          <span className="home-divider__line" />
         </div>
-      </section>
+        <svg
+          className="home-divider__curve"
+          viewBox="0 0 1440 96"
+          preserveAspectRatio="none"
+          focusable="false"
+        >
+          <path d="M0 48C240 12 480 0 720 24C960 48 1200 84 1440 48V96H0V48Z" />
+        </svg>
+      </div>
 
       <div className="home__dark">
         <section className="section promo-teaser">
@@ -599,14 +409,9 @@ export default function Home() {
                 </p>
               </div>
               <div className="promo-teaser__actions">
-                <a
-                  className="btn"
-                  href={whatsappLink('Olá! Quero consultar as promoções vigentes.')}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <WhatsAppCta href={whatsappLink('Olá! Quero consultar as promoções vigentes.')}>
                   Cotar no WhatsApp
-                </a>
+                </WhatsAppCta>
                 <Link className="btn btn--dark-ghost" to="/promocoes">
                   Ver condições
                 </Link>
@@ -659,14 +464,9 @@ export default function Home() {
             <p className="wa-strip__text">
               Atendimento humano, direto no WhatsApp.
             </p>
-            <a
-              className="btn"
-              href={whatsappLink('Olá! Quero falar com o atendimento.')}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <WhatsAppCta href={whatsappLink('Olá! Quero falar com o atendimento.')}>
               Chamar no WhatsApp
-            </a>
+            </WhatsAppCta>
           </div>
         </section>
 
