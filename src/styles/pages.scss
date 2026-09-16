@@ -115,27 +115,6 @@
   backdrop-filter: blur(6px);
 }
 
-@media (max-width: 640px) {
-  .hero__actions {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .hero__actions .wa-cta {
-    width: 100%;
-    align-items: stretch;
-  }
-
-  .hero__actions .wa-cta .btn,
-  .hero__actions .btn--ghost {
-    width: 100%;
-  }
-
-  .hero__actions .wa-cta__online {
-    justify-content: center;
-  }
-}
-
 .hero__cards {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
