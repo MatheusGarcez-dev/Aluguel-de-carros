@@ -5,6 +5,7 @@ import { useGSAP } from '@gsap/react'
 import heroBg from '../assets/hero-bg.png'
 import heroBgMobile from '../assets/hero-bg-mobile.png'
 import { whatsappLink } from '../data/site'
+import WhatsAppCta from './WhatsAppCta'
 
 gsap.registerPlugin(useGSAP)
 
@@ -172,14 +173,11 @@ export default function Hero() {
             direto no WhatsApp.
           </p>
           <div className="hero__actions">
-            <a
-              className="btn"
+            <WhatsAppCta
               href={whatsappLink('Olá! Quero consultar valores para aluguel de carro.')}
-              target="_blank"
-              rel="noopener noreferrer"
             >
               Falar no WhatsApp
-            </a>
+            </WhatsAppCta>
             <Link className="btn btn--ghost" to="/frota">
               Ver frota
             </Link>
